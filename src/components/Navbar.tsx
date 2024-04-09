@@ -4,16 +4,9 @@ import { motion } from "framer-motion";
 
 const Navbar: React.FC = () => {
   const menus: { name?: string; href?: string }[] = [
-    {},
-    // { name: "Home", href: "/" },
-    // { name: "About", href: "#about" },
-    // {
-    //   name: "Products",
-    //   href: "#products",
-    // },
-    // { name: "Gallery", href: "#gallery" },
-    // { name: "Team", href: "#team" },
-    // { name: "Contact", href: "#contact" },
+    { name: "hscode" },
+    { name: "produk" },
+    { name: "importir" },
   ];
 
   const scrollSmoothly = (sectionId: string) => {
@@ -30,11 +23,12 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="fixed z-20 w-full bg-white px-4 py-3 shadow-md transition-all duration-500 dark:bg-primary xl:px-10">
+    <nav className="fixed z-20 w-full bg-white px-4 py-3 shadow-md transition-all duration-500 dark:bg-primary xl:px-5 xl:py-5">
       <div className="container mx-auto w-full">
         <div className="relative flex justify-between">
           {/* Logo */}
-          <Logo />
+          {/* <Logo /> */}
+          <div className=""></div>
           {/* End Logo */}
 
           <ul className="hidden items-center justify-between sm:hidden md:flex md:gap-5 lg:gap-14">
@@ -46,12 +40,14 @@ const Navbar: React.FC = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <span className="text-xs font-bold uppercase tracking-widest">
+                <span className="text-sm font-bold uppercase tracking-widest">
                   {menu.name}
                 </span>
               </motion.li>
             ))}
           </ul>
+
+          <div className=""></div>
         </div>
       </div>
     </nav>
