@@ -17,7 +17,7 @@
 }
 
 .bg-export {
-  background-image: url("/img/export-bg.jpg");
+  background-image: url("/img/export-bg-3.jpg");
   background-position: center;
 }
 
@@ -27,6 +27,16 @@
 }
 
 ::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+  border-radius: 1px; /* Radius of the scrollbar thumb */
+}
+
+/* WebKit Scrollbar */
+.hidden-scroll::-webkit-scrollbar {
+  width: 0; /* Width of the scrollbar */
+}
+
+.hidden-scroll::-webkit-scrollbar-thumb {
   background-color: #888; /* Color of the scrollbar thumb */
   border-radius: 1px; /* Radius of the scrollbar thumb */
 }

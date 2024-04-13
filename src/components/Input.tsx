@@ -1,46 +1,70 @@
+import { GlobalCategoryContext } from "@/context/GlobalCategory";
 import { axiosInstance } from "@/lib/axios";
+import { capitalizeFirstChar } from "@/lib/helper";
+import {
+  GlobalCategoryContextType,
+  InputProps,
+  Placeholder,
+} from "@/types/Types";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/router";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 
-const Input = () => {
-  type Placeholder = {
-    id?: number;
-    name: string;
-  };
+const Input = ({ filterBy = "products" }: InputProps) => {
+  const router = useRouter();
+
+  const context = useContext(
+    GlobalCategoryContext,
+  ) as GlobalCategoryContextType;
 
   const [placeholderIndex, setPlaceholderIndex] = useState<number>(0);
-  const [placeholders, setPlaceholder] = useState<Placeholder[]>([]);
+  let [placeholders, setPlaceholder] = useState<Placeholder[]>([]);
   const [input, setInput] = useState<string>("");
 
+  const query: string = filterBy;
   const placeholder: string = placeholders?.[placeholderIndex]?.name;
+
+  // const currentPlaceholder = placeholders?.[placeholderIndex];
+  const currentPlaceholder = placeholders?.find((placeholder) =>
+    input.toLowerCase().includes(placeholder.name),
+  );
+
+  const { category } = context;
 
   const handleInputOnchange = (e: ChangeEvent<HTMLInputElement>) =>
     setInput(e.target.value);
 
-  const handleProductClick = (productName: string) => setInput(productName);
+  const handleProductClick = (dataName: string) => setInput(dataName);
 
-  const capitalizeFirstChar = (text: string): string =>
-    text?.charAt(0).toUpperCase() + text?.slice(1);
+  if (category === "trademap") {
+    placeholders = placeholders.map((trademap) => ({
+      hscode: trademap.hscode,
+      name: `${trademap.hscode} : ${trademap.name}`,
+    }));
+  }
 
-  const filteredPlaceholders = placeholders.filter((product) =>
-    product.name.toLowerCase().startsWith(input.toLowerCase()),
+  const filteredPlaceholders = placeholders.filter(
+    (data) =>
+      data.name.toLowerCase().startsWith(input.toLowerCase()) ||
+      data.name.toLowerCase().includes(input.toLowerCase()),
   );
 
-  const isExactMatch = filteredPlaceholders.some(
-    (product) => product.name === input,
-  );
+  const isExactMatch = filteredPlaceholders.some((data) => data.name === input);
 
-  const handleSearchOnClick = async () => {
-    const inputValue: string = input;
-    console.log("input : ", inputValue);
+  const handleSearchOnClick = (query: any) => {
+    console.log(query);
+    if (!input) return;
+
+    if (category === "trademap")
+      router.push(`/products/hscode/${query.toString()}`);
+    else router.push(`/products/${query}`);
   };
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          "http://localhost:3001/api/products",
+          `http://localhost:3001/api/${query}`,
         );
         setPlaceholder(response?.data.data);
       } catch (error) {
@@ -49,7 +73,7 @@ const Input = () => {
     }
 
     fetchData();
-  }, []);
+  }, [query]);
 
   useEffect(() => {
     // Function to change the placeholder text after 2 seconds
@@ -74,9 +98,9 @@ const Input = () => {
         <div className="flex w-full max-w-xl gap-3 rounded-t-xl bg-white px-3 pt-2">
           <motion.input
             type="text"
-            className="w-full rounded-lg bg-gray-200 px-3 py-2 text-lg text-gray-800 focus:outline-none"
+            className="w-full rounded-lg bg-gray-200 px-3 py-2 text-lg text-black focus:outline-none"
             onChange={handleInputOnchange}
-            value={input}
+            value={capitalizeFirstChar(input)}
             placeholder={
               placeholder ? capitalizeFirstChar(placeholder) : "Cari Produk"
             }
@@ -85,12 +109,21 @@ const Input = () => {
             exit={{ y: -10, opacity: 0 }}
           />
 
-          <button
-            className="w-1/3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-base font-bold uppercase text-white"
-            onClick={handleSearchOnClick}
-          >
-            Search
-          </button>
+          {category === "trademap" ? (
+            <button
+              className="w-1/3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-700 text-base font-bold uppercase text-white"
+              onClick={() => handleSearchOnClick(currentPlaceholder?.hscode)}
+            >
+              Search
+            </button>
+          ) : (
+            <button
+              className="w-1/3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-700 text-base font-bold uppercase text-white"
+              onClick={() => handleSearchOnClick(currentPlaceholder?.id)}
+            >
+              Search
+            </button>
+          )}
         </div>
       </div>
 
@@ -100,13 +133,13 @@ const Input = () => {
         } ${isExactMatch ? "pt-0" : "pt-0"}`}
       >
         <ul className={`${(!input || isExactMatch) && "hidden"} w-full`}>
-          {filteredPlaceholders.map((product) => (
+          {filteredPlaceholders.map((placeholder) => (
             <li
-              key={product.id}
-              className="w-full cursor-pointer bg-white px-3 py-2 hover:bg-slate-100"
-              onClick={() => handleProductClick(product.name)}
+              key={placeholder.id}
+              className={`w-full cursor-pointer bg-white px-3 py-2 capitalize hover:bg-slate-100`}
+              onClick={() => handleProductClick(placeholder.name)}
             >
-              {capitalizeFirstChar(product.name)}
+              {placeholder.name}
             </li>
           ))}
         </ul>
