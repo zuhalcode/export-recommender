@@ -1,4 +1,6 @@
-import { Importer } from "@/types/Types";
+import { PredictionContext } from "@/context/PredictionContext";
+import { Importer, PredictionContextType } from "@/types/Types";
+import { useContext } from "react";
 
 const ImporterCard = ({
   name,
@@ -12,17 +14,35 @@ const ImporterCard = ({
   RMSE,
   rSquared,
 }: Importer) => {
+  const predictionContext = useContext(
+    PredictionContext,
+  ) as PredictionContextType;
+
+  const data = predictionContext;
+
   return (
     <div className="space-y-2 px-5 py-3">
       <h2 className="font-mono text-xl font-semibold capitalize">{name}</h2>
 
-      <p className=" text-base font-medium text-gray-600">
-        Koefisien Determinasi : {rSquared?.toFixed(2)}
-      </p>
-      <p className="text-justify text-base font-medium text-gray-600">
-        Prediksi :{" "}
-        {prediction?.toLocaleString("id-ID", { maximumFractionDigits: 2 })} USD
-      </p>
+      {data.prediction === "r" ? (
+        <>
+          <p className=" text-base font-medium text-gray-600">
+            Koefisien Determinasi : {rSquared?.toFixed(2)}
+          </p>
+          <p className="text-justify text-base font-medium text-gray-600">
+            Prediksi :{" "}
+            {prediction?.toLocaleString("id-ID", { maximumFractionDigits: 2 })}{" "}
+            USD
+          </p>
+        </>
+      ) : (
+        <p className="text-justify text-base font-medium text-gray-600">
+          Prediksi :{" "}
+          {prediction?.toLocaleString("id-ID", { maximumFractionDigits: 2 })}{" "}
+          USD
+        </p>
+      )}
+
       <p className="text-justify text-base font-medium text-gray-600">
         Neraca Perdagangan : {trade_balance?.toLocaleString("id-ID")} USD
       </p>
@@ -33,8 +53,16 @@ const ImporterCard = ({
         Nilai Impor : {value_imported?.toLocaleString("id-ID")} USD
       </p>
       <p className="text-justify text-base font-medium capitalize text-gray-600">
-        Unit Value : {unit_value?.toLocaleString("id-ID")} USD / {quantity_unit}
+        Estimasi Harga : {unit_value?.toLocaleString("id-ID")} USD /{" "}
+        {quantity_unit}
       </p>
+
+      {data.prediction === "y" && (
+        <p className=" text-base font-medium text-gray-600">
+          Koefisien Determinasi : {rSquared?.toFixed(2)}
+        </p>
+      )}
+
       <p className="text-justify text-base font-medium text-gray-600">
         MAE : {MAE?.toFixed(2)}
       </p>

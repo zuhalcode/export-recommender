@@ -1,7 +1,15 @@
 import { ImporterCard, Layout, Loading } from "@/components";
+import { GlobalCategoryContext } from "@/context/GlobalCategoryContext";
 import { NavbarContext } from "@/context/NavbarContext";
+import { PredictionContext } from "@/context/PredictionContext";
 import { axiosInstance } from "@/lib/axios";
-import { Importer, NavbarContextType, Product } from "@/types/Types";
+import {
+  GlobalCategoryContextType,
+  Importer,
+  NavbarContextType,
+  PredictionContextType,
+  Product,
+} from "@/types/Types";
 import { useRouter } from "next/router";
 
 import React, { useContext, useEffect, useState } from "react";
@@ -10,16 +18,27 @@ const ProductDetail = () => {
   const router = useRouter();
 
   const navbarContext = useContext(NavbarContext) as NavbarContextType;
+  const context = useContext(
+    GlobalCategoryContext,
+  ) as GlobalCategoryContextType;
+
+  const predictionContext = useContext(
+    PredictionContext,
+  ) as PredictionContextType;
 
   const [product, setProduct] = useState<Product>();
   const [importers, setImporters] = useState<Importer[]>([]);
 
   const { setNavbar } = navbarContext;
+  const { setCategory } = context;
+  const { prediction } = predictionContext;
   const { id } = router.query;
-  const sortBy = "r";
+
+  const sortBy = prediction;
 
   useEffect(() => {
     setNavbar(false);
+    setCategory("prediction");
 
     async function fetchData() {
       try {
@@ -36,7 +55,7 @@ const ProductDetail = () => {
     }
 
     fetchData();
-  }, [id, setNavbar]);
+  }, [id, setCategory, setNavbar]);
 
   useEffect(() => {
     async function fetchData() {
@@ -60,23 +79,21 @@ const ProductDetail = () => {
     }
 
     fetchData();
-  }, [product]);
-
-  console.log(importers);
+  }, [product, sortBy]);
 
   return (
-    <Layout>
+    <Layout title="Importir Produk">
       <div className="container">
         <div className="relative z-10 px-10 pt-20">
           <h1 className="mb-5 text-center font-sans text-xl font-bold capitalize text-white">
             {product ? (
-              `Importers for Product : ${product?.name}`
+              `Importir untuk Produk : ${product?.name} ~ HSCODE ${product.hscode}`
             ) : (
               <Loading size="sm" />
             )}
           </h1>
 
-          <div className="hidden-scroll container grid max-h-[29rem] grid-cols-3 justify-between gap-10 overflow-y-auto px-10 pb-5">
+          <div className="hidden-scroll container grid max-h-[470px] grid-cols-3 justify-between gap-10 overflow-y-auto px-10 pb-5">
             {importers ? (
               importers?.map((importer) => (
                 <div

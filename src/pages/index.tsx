@@ -1,6 +1,6 @@
 import { Layout } from "@/components";
 import Input from "@/components/Input";
-import { GlobalCategoryContext } from "@/context/GlobalCategory";
+import { GlobalCategoryContext } from "@/context/GlobalCategoryContext";
 import { NavbarContext } from "@/context/NavbarContext";
 import { GlobalCategoryContextType, NavbarContextType } from "@/types/Types";
 import { useContext, useEffect } from "react";
@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <Layout>
       <div className="relative top-[20%] z-30 mx-auto flex flex-col items-center justify-center gap-12">
-        <div className="max-w-2xl text-center text-6xl font-bold text-white">
+        <div className="mt-24 max-w-2xl text-center text-6xl font-bold text-white">
           Rekomendasi Produk Ekspor Untuk Anda
         </div>
 

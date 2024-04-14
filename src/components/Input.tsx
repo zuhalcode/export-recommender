@@ -1,4 +1,4 @@
-import { GlobalCategoryContext } from "@/context/GlobalCategory";
+import { GlobalCategoryContext } from "@/context/GlobalCategoryContext";
 import { axiosInstance } from "@/lib/axios";
 import { capitalizeFirstChar } from "@/lib/helper";
 import {

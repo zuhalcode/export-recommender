@@ -41,7 +41,11 @@ export type NavbarProps = {
   home?: boolean;
 };
 
-export type AppLayoutProps = { children: ReactNode; navbar?: boolean };
+export type AppLayoutProps = {
+  children: ReactNode;
+  navbar?: boolean;
+  title?: string;
+};
 
 export type GlobalCategoryContextType = {
   category: string;
@@ -51,4 +55,9 @@ export type GlobalCategoryContextType = {
 export type NavbarContextType = {
   navbar: boolean;
   setNavbar: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type PredictionContextType = {
+  prediction: string;
+  setPrediction: React.Dispatch<React.SetStateAction<string>>;
 };

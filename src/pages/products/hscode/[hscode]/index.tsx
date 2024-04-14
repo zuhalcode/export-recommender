@@ -52,7 +52,7 @@ const ProductsByHscode = () => {
     <Layout>
       <div className="container">
         <div className="relative z-10 px-10 pt-20">
-          <h1 className="mb-5 text-center font-sans text-xl font-bold text-white">
+          <h1 className="mb-5 text-center font-sans text-base font-bold text-white">
             {!trademap && products.length === 0 && (
               <div className="flex justify-center">
                 <Loading />
