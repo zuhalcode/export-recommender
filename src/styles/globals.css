@@ -21,6 +21,13 @@
   background-position: center;
 }
 
+.bg-export-2 {
+  background-image: url("/img/export-bg-7.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 /* WebKit Scrollbar */
 ::-webkit-scrollbar {
   width: 8px; /* Width of the scrollbar */

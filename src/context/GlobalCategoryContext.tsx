@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 type Props = {
   children: ReactNode;
@@ -14,7 +14,7 @@ const GlobalCategoryContext = createContext<
 >(undefined);
 
 const GlobalCategoryProvider = ({ children }: Props) => {
-  const [category, setCategory] = useState<string>("trademap");
+  const [category, setCategory] = useState<string>("hscode");
 
   return (
     <GlobalCategoryContext.Provider
@@ -23,6 +23,17 @@ const GlobalCategoryProvider = ({ children }: Props) => {
       {children}
     </GlobalCategoryContext.Provider>
   );
+};
+
+// Custom hook for convenience
+export const useCategory = () => {
+  const context = useContext(GlobalCategoryContext);
+  if (!context) {
+    throw new Error(
+      "useGlobalCategory must be used within a GlobalCategoryProvider",
+    );
+  }
+  return context;
 };
 
 export { GlobalCategoryContext, GlobalCategoryProvider };
