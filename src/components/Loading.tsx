@@ -1,7 +1,7 @@
 import React from "react";
 
 const Loading = ({ size = "xl" }) => {
-  const height = size === "xl" ? "420" : size === "md" ? "250" : "50";
+  const height = size === "xl" ? "480" : size === "md" ? "250" : "50";
 
   return (
     <div className="flex justify-center">

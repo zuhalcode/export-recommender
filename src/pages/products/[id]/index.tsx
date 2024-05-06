@@ -1,7 +1,8 @@
-import { ImporterCard, Layout, Loading } from "@/components";
+import { ImporterCard, Loading } from "@/components";
 import { GlobalCategoryContext } from "@/context/GlobalCategoryContext";
 import { NavbarContext } from "@/context/NavbarContext";
 import { PredictionContext } from "@/context/PredictionContext";
+import { quicksand } from "@/fonts/GoogleFont";
 import { axiosInstance } from "@/lib/axios";
 import {
   GlobalCategoryContextType,
@@ -11,8 +12,10 @@ import {
   Product,
 } from "@/types/Types";
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 
 import React, { useContext, useEffect, useState } from "react";
+import HomeButton from "@/components/HomeButton";
 
 const ProductDetail = () => {
   const router = useRouter();
@@ -82,47 +85,42 @@ const ProductDetail = () => {
   }, [product, sortBy]);
 
   return (
-    <Layout title="Importir Produk">
-      <div className="container">
-        <div className="relative z-10 px-10 pt-20">
-          <h1 className="mb-5 text-center font-sans text-xl font-bold capitalize text-white">
-            {product ? (
-              `Importir untuk Produk : ${product?.name} ~ HSCODE ${product.hscode}`
-            ) : (
-              <Loading size="sm" />
-            )}
-          </h1>
-
-          <div className="hidden-scroll container grid max-h-[470px] grid-cols-3 justify-between gap-10 overflow-y-auto px-10 pb-5">
-            {importers ? (
-              importers?.map((importer) => (
-                <div
-                  className="cursor-pointer rounded-md bg-gray-100 transition-all duration-100 hover:translate-x-1 hover:translate-y-1 hover:bg-gray-200"
-                  key={importer.id}
-                >
-                  <ImporterCard
-                    name={importer.name}
-                    prediction={importer.prediction || 0}
-                    trade_balance={importer.trade_balance || 0}
-                    quantity_imported={importer.quantity_imported || 0}
-                    quantity_unit={importer.quantity_unit}
-                    unit_value={importer.unit_value || 0}
-                    value_imported={importer.value_imported || 0}
-                    MAE={importer.MAE || 0}
-                    RMSE={importer.RMSE || 0}
-                    rSquared={importer.rSquared || 0}
-                  />
-                </div>
-              ))
-            ) : (
-              <div className="flex justify-center">
-                <Loading />
-              </div>
-            )}
-          </div>
-        </div>
+    <div className={`${quicksand.className} bg-[#262939] px-10 pb-0 pt-5 `}>
+      <div className="flex flex-col items-center justify-center gap-3 pb-8">
+        <HomeButton />
+        <h1 className="text-center text-3xl font-medium capitalize text-white">
+          {product ? (
+            `Importir untuk Produk : ${product?.name} ~ HSCODE ${product.hscode}`
+          ) : (
+            <Loading size="sm" />
+          )}
+        </h1>
       </div>
-    </Layout>
+
+      <div className="hidden-scroll grid max-h-[28.83rem] grid-cols-3 gap-7 overflow-y-auto overflow-x-hidden pb-3">
+        {importers ? (
+          importers?.map((importer) => (
+            <ImporterCard
+              key={importer.id}
+              name={importer.name}
+              prediction={importer.prediction || 0}
+              trade_balance={importer.trade_balance || 0}
+              quantity_imported={importer.quantity_imported || 0}
+              quantity_unit={importer.quantity_unit}
+              unit_value={importer.unit_value || 0}
+              value_imported={importer.value_imported || 0}
+              MAE={importer.MAE || 0}
+              RMSE={importer.RMSE || 0}
+              rSquared={importer.rSquared || 0}
+            />
+          ))
+        ) : (
+          <div className="flex justify-center">
+            <Loading />
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

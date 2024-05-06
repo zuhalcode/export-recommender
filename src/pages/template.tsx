@@ -1,17 +1,11 @@
 import { useCategory } from "@/context/GlobalCategoryContext";
 
-import { Quicksand } from "next/font/google";
-
 import { motion } from "framer-motion";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Placeholder } from "@/types/Types";
 import { axiosInstance } from "@/lib/axios";
 import { capitalizeFirstChar } from "@/lib/helper";
-
-const quicksand = Quicksand({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
+import { quicksand } from "@/fonts/GoogleFont";
 
 const Template = () => {
   const menus = [
@@ -84,91 +78,77 @@ const Template = () => {
   }, [placeholders, input]);
 
   return (
-    <>
-      {/* <nav className="relative z-20 w-full bg-[#212332] p-3">
-        <div>
-          <p className="text-white">LOGO</p>
+    <main className="bg-export-2 relative z-0 min-h-screen w-full">
+      {/* Layer */}
+      <div className="absolute bottom-0 top-0 z-10 w-full bg-gradient-to-r from-[#4141a5] to-[#12428e] opacity-75" />
+      {/* Layer */}
+
+      <div className={`${quicksand.className} relative z-10 pt-5`}>
+        <div className="p-10">
+          <h1 className="text-center text-5xl font-medium text-white ">
+            Rekomendasi Produk Ekspor Anda
+          </h1>
+
+          <p className="text-center text-xl text-white">
+            It is a long established fact that a reader will be distracted by
+            the readable.
+          </p>
         </div>
-      </nav> */}
-
-      <div>
-        <main className="bg-export-2 relative z-0 min-h-screen w-full">
-          {/* Layer */}
-          <div className="absolute bottom-0 top-0 z-10 w-full bg-gradient-to-r from-[#4141a5] to-[#12428e] opacity-75" />
-          {/* Layer */}
-
-          <div className={`${quicksand.className} relative z-10 pt-5`}>
-            <div className="p-10">
-              <h1 className="text-center text-5xl font-medium text-white ">
-                Rekomendasi Produk Ekspor Anda
-              </h1>
-
-              <p className="text-center text-xl text-white">
-                It is a long established fact that a reader will be distracted
-                by the readable.
-              </p>
-            </div>
-            {/* Search Box */}
-            <div className="flex items-center justify-center">
-              <div className="w-full">
-                <ul
-                  className={`mx-auto flex w-[70%] pl-4 font-medium text-white`}
-                >
-                  {menus.map((menu, i) => (
-                    <motion.li
-                      key={i}
-                      className={`cursor-pointer rounded-t-sm ${
-                        category === menu.name ? "bg-[#6661e9]" : "bg-none"
-                      } 
+        {/* Search Box */}
+        <div className="flex items-center justify-center">
+          <div className="w-full">
+            <ul className={`mx-auto flex w-[70%] pl-4 font-medium text-white`}>
+              {menus.map((menu, i) => (
+                <motion.li
+                  key={i}
+                  className={`cursor-pointer rounded-t-sm ${
+                    category === menu.name ? "bg-[#6661e9]" : "bg-none"
+                  } 
 
                       px-3 py-2 capitalize outline-none`}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => handleChangeCategory(menu.query)}
-                    >
-                      {menu.name}
-                    </motion.li>
-                  ))}
-                </ul>
-                <div className="mx-auto flex w-[70%] items-center rounded-md bg-[#3861B3] bg-opacity-80 p-4">
-                  <input
-                    type="text"
-                    className="w-full rounded-l bg-[#2C3B75] px-4 py-2 font-medium text-white outline-none placeholder:text-white"
-                    onChange={handleInputOnchange}
-                    value={capitalizeFirstChar(input)}
-                    placeholder={
-                      placeholder
-                        ? capitalizeFirstChar(placeholder)
-                        : "Cari Produk"
-                    }
-                  />
-                  <button className="rounded-r bg-blue-500 px-4 py-2 font-medium text-white transition-all duration-100 hover:bg-blue-600">
-                    Search
-                  </button>
-                </div>
-              </div>
-            </div>
-            {/* Search Box */}
-
-            <div
-              className="mx-auto mt-3 max-h-64 w-[70%] overflow-y-auto rounded-sm 
-            bg-white"
-            >
-              <ul className={`${(!input || isExactMatch) && "hidden"} w-full`}>
-                {filteredPlaceholders.map((placeholder) => (
-                  <li
-                    key={placeholder.id}
-                    className={`w-full cursor-pointer bg-gray-100 px-3 py-2 capitalize hover:bg-slate-200`}
-                    onClick={() => handleProductClick(placeholder.name)}
-                  >
-                    {placeholder.name}
-                  </li>
-                ))}
-              </ul>
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => handleChangeCategory(menu.query)}
+                >
+                  {menu.name}
+                </motion.li>
+              ))}
+            </ul>
+            <div className="mx-auto flex w-[70%] items-center rounded-md bg-[#3861B3] bg-opacity-80 p-4">
+              <input
+                type="text"
+                className="w-full rounded-l bg-[#2C3B75] px-4 py-2 font-medium text-white outline-none placeholder:text-white"
+                onChange={handleInputOnchange}
+                value={capitalizeFirstChar(input)}
+                placeholder={
+                  placeholder ? capitalizeFirstChar(placeholder) : "Cari Produk"
+                }
+              />
+              <button className="rounded-r bg-blue-500 px-4 py-2 font-medium text-white transition-all duration-100 hover:bg-blue-600">
+                Search
+              </button>
             </div>
           </div>
-        </main>
+        </div>
+        {/* Search Box */}
+
+        <div
+          className="mx-auto mt-3 max-h-64 w-[70%] overflow-y-auto rounded-sm 
+            bg-white"
+        >
+          <ul className={`${(!input || isExactMatch) && "hidden"} w-full`}>
+            {filteredPlaceholders.map((placeholder) => (
+              <li
+                key={placeholder.id}
+                className={`w-full cursor-pointer bg-gray-100 px-3 py-2 capitalize hover:bg-slate-200`}
+                onClick={() => handleProductClick(placeholder.name)}
+              >
+                {placeholder.name}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </>
+    </main>
   );
 };
 
