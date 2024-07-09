@@ -23,7 +23,9 @@
     "**/*.tsx",
     "tailwind.config.js",
     "src/**/*.ts",
-    "src/**/*.tsx"
+    "src/**/*.tsx",
+    "src/components/RegressionChart.jsx",
+    "src/components/RegressionChart.jsx"
   ],
   "exclude": ["node_modules"]
 }

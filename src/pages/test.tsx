@@ -1,4 +1,3 @@
-import Card from "@/components/new/Card";
 import { quicksand } from "@/fonts/GoogleFont";
 import { motion } from "framer-motion";
 import React from "react";
@@ -22,19 +21,7 @@ const Test = () => {
         </h1>
       </div>
 
-      <div className="hidden-scroll grid max-h-[25.86rem] grid-cols-3 gap-7 overflow-y-auto overflow-x-hidden pb-3">
-        {["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"].map(
-          (val, i) => (
-            <Card
-              key={i}
-              name={val}
-              desc={
-                "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, dolore."
-              }
-            />
-          ),
-        )}
-      </div>
+      <div className="hidden-scroll grid max-h-[25.86rem] grid-cols-3 gap-7 overflow-y-auto overflow-x-hidden pb-3"></div>
     </div>
   );
 };

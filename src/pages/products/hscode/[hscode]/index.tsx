@@ -1,16 +1,14 @@
-import { Card, Layout, Loading } from "@/components";
-import { NavbarContext } from "@/context/NavbarContext";
+import { Card, Loading } from "@/components";
 import { quicksand } from "@/fonts/GoogleFont";
 import { axiosInstance } from "@/lib/axios";
-import { NavbarContextType, Product, Trademap } from "@/types/Types";
+import { Product, Trademap } from "@/types/Types";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { motion } from "framer-motion";
 import HomeButton from "@/components/HomeButton";
+import Head from "next/head";
+import ChartButton from "@/components/ChartButton";
 const ProductsByHscode = () => {
-  const navbarContext = useContext(NavbarContext) as NavbarContextType;
-
   const router = useRouter();
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -18,15 +16,11 @@ const ProductsByHscode = () => {
 
   const { hscode } = router.query;
 
-  const { setNavbar } = navbarContext;
-
   const handleProductOnclick = (productId: any) => {
     router.push(`/products/${productId}`);
   };
 
   useEffect(() => {
-    setNavbar(false);
-
     async function fetchData() {
       try {
         if (hscode) {
@@ -49,27 +43,30 @@ const ProductsByHscode = () => {
     }
 
     fetchData();
-  }, [hscode, setNavbar]);
+  }, [hscode]);
 
   return (
     <div className={`${quicksand.className} bg-[#262939] px-10 pb-0 pt-5`}>
-      <div className="flex flex-col items-center justify-center gap-3 pb-10">
+      <Head>
+        <title>Produk</title>
+      </Head>
+      <div className="flex flex-col items-center justify-center gap-3 pb-14">
         <HomeButton />
         <h1 className="text-center text-3xl font-medium text-white">
           {!trademap && products.length === 0 && (
             <div className="flex justify-center">
-              <Loading />
+              <Loading size="md" />
             </div>
           )}
           {trademap && `HSCODE ${trademap.hscode}`}
         </h1>
 
-        <h2 className="text-center text-lg font-semibold text-slate-300">
+        <h2 className="text-center text-lg font-semibold capitalize text-slate-300">
           {trademap?.name}
         </h2>
       </div>
 
-      <div className="hidden-scroll grid max-h-[25.86rem] grid-cols-3 gap-7 overflow-y-auto overflow-x-hidden pb-3">
+      <div className="hidden-scroll grid max-h-[25.86rem] min-h-[25rem] grid-cols-3 gap-7 overflow-y-auto overflow-x-hidden pb-3">
         {products ? (
           products?.map((product) => (
             <div

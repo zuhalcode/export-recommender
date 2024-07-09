@@ -9,11 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/chart.js": "^2.9.41",
+    "apexcharts": "^3.49.1",
     "axios": "^1.5.1",
     "framer-motion": "^10.16.4",
     "next": "13.5.4",
     "react": "^18",
+    "react-apexcharts": "^1.4.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
+    "sweetalert2": "^11.11.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
